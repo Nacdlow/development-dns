@@ -12,6 +12,12 @@ import (
 type handler struct{}
 
 func (this *handler) ServeDNS(w dns.ResponseWriter, r *dns.Msg) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered handler", r)
+		}
+	}()
+
 	msg := dns.Msg{}
 	msg.SetReply(r)
 	switch r.Question[0].Qtype {
@@ -36,7 +42,7 @@ var (
 	c      *dns.Client = new(dns.Client)
 	domain             = "local.nacdlow.com."
 	ip     string
-	extDNS = "8.8.8.8"
+	extDNS = "137.195.151.105"
 )
 
 func getAnswer(dom string) []dns.RR {
@@ -45,11 +51,11 @@ func getAnswer(dom string) []dns.RR {
 	m.RecursionDesired = true
 	r, _, err := c.Exchange(m, net.JoinHostPort(extDNS, "53"))
 	if r == nil {
-		log.Errorf("Error while getting external request: %s\n", err.Error())
+		log.Printf("Error while getting external request: %s\n", err.Error())
 	}
 
 	if r.Rcode != dns.RcodeSuccess {
-		log.Errorln("Invalid answer while getting external request!")
+		log.Println("Invalid answer while getting external request!")
 	}
 	return r.Answer
 }
