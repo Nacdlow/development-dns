@@ -42,7 +42,8 @@ var (
 	c      *dns.Client = new(dns.Client)
 	domain             = "local.nacdlow.com."
 	ip     string
-	extDNS = "137.195.151.105"
+	//extDNS = "137.195.151.105"
+	extDNS = "8.8.8.8"
 )
 
 func getAnswer(dom string) []dns.RR {
