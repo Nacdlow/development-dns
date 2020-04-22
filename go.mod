@@ -1,4 +1,4 @@
-module gitlab.com/group-nacdlow/dev-dns-server
+module github.com/Nacdlow/development-dns
 
 go 1.13
 
